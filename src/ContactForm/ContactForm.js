@@ -15,7 +15,6 @@ export default class Phonebook extends Component {
   };
 
   state = {
-    contacts: [],
     name: '',
     number: '',
   };
@@ -23,17 +22,8 @@ export default class Phonebook extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    this.props.OnsaveContacts(this.state);
-
-    this.setState(prevState => {
-      return {
-        contacts: prevState.contacts,
-      };
-    });
-
+    this.props.OnSaveContacts(this.state);
     this.reset();
-
-    console.log(this.state);
   };
 
   reset = () => {
@@ -63,7 +53,7 @@ export default class Phonebook extends Component {
             Number
             <input
               name="number"
-              tupe="text"
+              type="text"
               value={this.state.number}
               onChange={this.handleChange}
             ></input>
@@ -71,11 +61,6 @@ export default class Phonebook extends Component {
 
           <button type="submit">Add contact</button>
         </form>
-        <ul>
-          {' '}
-          Contacts
-          <li></li>
-        </ul>
       </div>
     );
   }
