@@ -41,6 +41,7 @@ class App extends Component {
 
     if (isGetContactAlready) {
       alert(`${data.name} is already in contacts!`);
+      return;
     }
   };
 
@@ -51,16 +52,23 @@ class App extends Component {
     }));
   };
 
-  filterContacts = contactName => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(
-        contact => contact.name !== contactName,
-      ),
-    }));
+  handleChangeFilter = e => {
+    const { value } = e.currentTarget;
+    console.log(value);
+    this.setState({ filter: value });
+  };
+
+  filterContactsByName = () => {
+    return this.state.contacts.filter(contact =>
+      contact.name
+        .toLocaleLowerCase()
+        .includes(this.state.filter.toLocaleLowerCase()),
+    );
   };
 
   render() {
-    const { contacts } = this.state;
+    const contacts = this.filterContactsByName();
+
     return (
       <div>
         <h1>Phonebook</h1>
@@ -69,13 +77,9 @@ class App extends Component {
         <h2>Contacts</h2>
         <Filter
           value={this.state.filter}
-          OnFilterContacts={this.filterContacts}
+          OnFilterContacts={this.handleChangeFilter}
         />
-        <ContactList
-          contacts={contacts}
-          // filterContacts={this.filterContacts}
-          ondeleteContact={this.deleteContact}
-        />
+        <ContactList contacts={contacts} ondeleteContact={this.deleteContact} />
       </div>
     );
   }
