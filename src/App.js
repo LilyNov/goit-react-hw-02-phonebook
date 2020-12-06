@@ -1,11 +1,28 @@
 import React, { Component } from 'react';
 import { v1 as uuidv1 } from 'uuid';
-import './App.css';
+import s from './App.module.css';
 import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
+import PropTypes from 'prop-types';
 
 class App extends Component {
+  static defaultProps = {
+    contacts: [],
+    name: '',
+    number: '',
+  };
+
+  static propTypes = {
+    contacts: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string,
+        number: PropTypes.string,
+      }),
+    ),
+  };
+
   state = {
     contacts: [
       { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -17,18 +34,11 @@ class App extends Component {
   };
 
   formSubmitHandler = data => {
-    //создаем объект контакта и добавляем в массив
     const myContacts = {
       id: uuidv1(),
       name: data.name,
-      number: data.numder,
+      number: data.number,
     };
-
-    this.setState(prevState => {
-      return {
-        contacts: [...prevState.contacts, myContacts],
-      };
-    });
 
     //проверяем дублируется контакт или нет при добавлении
     const getContacts = this.state.contacts.map(contact =>
@@ -41,12 +51,16 @@ class App extends Component {
 
     if (isGetContactAlready) {
       alert(`${data.name} is already in contacts!`);
-      return;
+    } else {
+      this.setState(prevState => {
+        return {
+          contacts: [...prevState.contacts, myContacts],
+        };
+      });
     }
   };
 
   deleteContact = contactId => {
-    console.log(contactId);
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
@@ -54,7 +68,6 @@ class App extends Component {
 
   handleChangeFilter = e => {
     const { value } = e.currentTarget;
-    console.log(value);
     this.setState({ filter: value });
   };
 
@@ -71,7 +84,7 @@ class App extends Component {
 
     return (
       <div>
-        <h1>Phonebook</h1>
+        <h1 className={s.title}>Phonebook</h1>
         <ContactForm OnSaveContacts={this.formSubmitHandler} />
 
         <h2>Contacts</h2>

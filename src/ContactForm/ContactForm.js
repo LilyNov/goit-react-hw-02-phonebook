@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import s from '../ContactForm/ContactForm.module.css';
 
 export default class Phonebook extends Component {
   static defaultProps = {
-    contacts: [],
     name: '',
     number: '',
   };
@@ -37,11 +37,12 @@ export default class Phonebook extends Component {
 
   render() {
     return (
-      <div>
+      <div className={s.container}>
         <form onSubmit={this.handleSubmit}>
-          <label>
+          <label className={s.label}>
             Name
             <input
+              className={s.input}
               name="name"
               type="text"
               value={this.state.name}
@@ -49,9 +50,10 @@ export default class Phonebook extends Component {
             ></input>
           </label>
 
-          <label>
+          <label className={s.label}>
             Number
             <input
+              className={s.input}
               name="number"
               type="text"
               value={this.state.number}
@@ -59,7 +61,9 @@ export default class Phonebook extends Component {
             ></input>
           </label>
 
-          <button type="submit">Add contact</button>
+          <button className={s.btn} type="submit">
+            Add contact
+          </button>
         </form>
       </div>
     );
